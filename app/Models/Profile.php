@@ -10,7 +10,7 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'role', 'department', 'dateOfBirth'];
+    protected $fillable = ['user_id','name', 'role', 'department', 'dateOfBirth'];
 
     // Define the relationship to User
     public function user()

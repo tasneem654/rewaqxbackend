@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['email'];
 
     // Define the relationship to Profile
     public function profile()

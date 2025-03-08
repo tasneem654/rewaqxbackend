@@ -9,54 +9,15 @@ class Reaction extends Model
 {
     use HasFactory;
 
-    // Define predefined reactions and their associated points
-    public const PREDEFINED_REACTIONS = [
-        '❤️' => 0,
-        '👍' => 10,
-        '👏' => 20,
-        '😍' => 30,
-        '🫡' => 40,
-        '🔥' => 50,
-        '🎁' => 60,
-        '💪' => 70,
-        '🏆' => 80,
-        '🚀' => 90,
-    ];
+    protected $fillable = ['post_id', 'user_id', 'emoji', 'points'];
 
-    // Fillable fields
-    protected $fillable = ['user_id', 'post_id', 'emoji', 'points'];
-
-    // Define the relationship to User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    // Define the relationship to Post
     public function post()
     {
         return $this->belongsTo(Post::class);
     }
 
-    /**
-     * Validate and get the points for a given reaction emoji.
-     *
-     * @param string $emoji
-     * @return int|null
-     */
-    public static function getPointsForReaction(string $emoji): ?int
+    public function user()
     {
-        return self::PREDEFINED_REACTIONS[$emoji] ?? null;
-    }
-
-    /**
-     * Check if a reaction is valid (exists in predefined reactions).
-     *
-     * @param string $emoji
-     * @return bool
-     */
-    public static function isValidReaction(string $emoji): bool
-    {
-        return array_key_exists($emoji, self::PREDEFINED_REACTIONS);
+        return $this->belongsTo(User::class);
     }
 }

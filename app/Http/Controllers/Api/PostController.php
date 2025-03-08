@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller; // Add this line
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('reactions', 'comments')->get();
-        return response()->json($posts);
-    }
+
+    $posts = Post::with('reactions', 'comments', 'user.profile')->get();
+
+    \Log::info('Fetched posts:', ['posts' => $posts]);
+
+    return response()->json($posts);
+}
+
+    
 
     public function store(Request $request)
     {
@@ -34,7 +41,6 @@ class PostController extends Controller
 
         return response()->json($post, 201);
     }
-
 
     public function destroy($id)
     {

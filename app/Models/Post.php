@@ -9,18 +9,8 @@ class Post extends Model
 {
     use HasFactory;
 
-    // Define fillable fields (if any)
-    protected $fillable = [
-      'user_id',
-      'content',
-      'reactions',
-      'comments',
-      'time',
-      'image_path',
-        // Add other fields as needed
-    ];
+    protected $fillable = ['user_id', 'content', 'image_path'];
 
-    // Define relationships (if any)
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -36,4 +26,3 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 }
-      
