@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('profiles', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key to users
-        $table->string('name');
-        $table->string('role');
-        $table->string('department');
-        $table->date('dateOfBirth');
-        $table->timestamps();
-    });
+        Schema::create('profiles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade'); // Unique foreign key to users
+            $table->string('name');
+            $table->string('role');
+            $table->string('department');
+            $table->date('dateOfBirth');
+            $table->timestamps();
+        });
     }
 
     /**

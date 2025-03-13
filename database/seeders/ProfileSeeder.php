@@ -18,10 +18,11 @@ class ProfileSeeder extends Seeder
         foreach ($users as $user) {
             Profile::create([
                 'user_id' => $user->id,
-                'name' => 'Tasneem Alhattami ' . $user->id, // Example name
-                'role' => 'Software Enginner', // Example role
+                'name' => 'Tasneem Alhattami ' , // Example name
+                'role' => 'Software Engineer', // Example role
                 'department' => 'IT Department', // Example department
                 'dateOfBirth' => '2002-09-21', // Example date of birth
+                'image' => 'profile_images/avatar.png'
             ]);
         }
     }
