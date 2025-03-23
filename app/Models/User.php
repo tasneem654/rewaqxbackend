@@ -1,7 +1,6 @@
 <?php
 
 // app/Models/User.php
-
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,6 +22,12 @@ class User extends Authenticatable
     public function points()
     {
         return $this->hasOne(Points::class);
+    }
+
+    // Define the relationship to Posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 
     // Define the relationship to Reactions

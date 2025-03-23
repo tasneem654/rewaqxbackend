@@ -2,6 +2,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\ReactionController;
+
 
 // Route to fetch all posts (API endpoint)
 Route::get('/posts', [PostController::class, 'index']);

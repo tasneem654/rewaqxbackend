@@ -12,14 +12,22 @@ class PostController extends Controller
     public function index()
     {
 
-    $posts = Post::with('reactions', 'comments', 'user.profile')->get();
+      $posts = Post::with('reactions', 'comments', 'user.profile')->get();
 
-    \Log::info('Fetched posts:', ['posts' => $posts]);
+      \Log::info('Fetched posts:', ['posts' => $posts]);
 
-    return response()->json($posts);
+      return response()->json($posts);
 }
 
-    
+public function show(Request $request, $id)
+{
+    try {
+        $post = Post::findOrFail($id);
+        return response()->json(['data' => $post, 'headers' => $request->headers->all()]);
+    } catch (Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 
     public function store(Request $request)
     {
@@ -42,11 +50,5 @@ class PostController extends Controller
         return response()->json($post, 201);
     }
 
-    public function destroy($id)
-    {
-        $post = Post::findOrFail($id);
-        Storage::disk('public')->delete($post->image_path); // Delete the associated image
-        $post->delete();
-        return response()->json(null, 204);
-    }
+    
 }
