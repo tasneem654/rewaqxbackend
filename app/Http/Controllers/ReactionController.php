@@ -15,7 +15,7 @@ class ReactionController extends Controller
         // Validate the request
         $request->validate([
             'emoji' => 'required|string',
-            'points' => 'required|integer|min:1', // Ensure points are positive
+            'points' => 'required|integer', // Ensure points are positive
         ]);
 
         // Hardcode the authenticated user ID to 1 for testing
