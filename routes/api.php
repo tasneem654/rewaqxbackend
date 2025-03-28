@@ -3,7 +3,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\ReactionController;
-
+use App\Http\Controllers\OTPController;
+use App\Http\Controllers\CommentController;
 
 // Route to fetch all posts (API endpoint)
 Route::get('/posts', [PostController::class, 'index']);
@@ -20,6 +21,9 @@ Route::put('/posts/{id}', [PostController::class, 'update']);
 // Route to delete a post (API endpoint)
 Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
-
 Route::post('posts/{postId}/comments', [CommentController::class, 'store']);
 Route::post('posts/{postId}/reactions', [ReactionController::class, 'store']);
+
+//OTP
+Route::post('/send-otp', [OTPController::class, 'sendOTP']);
+Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);

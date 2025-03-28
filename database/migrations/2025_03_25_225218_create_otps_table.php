@@ -9,23 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('reactions', function (Blueprint $table) {
+        Schema::create('otps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->string('emoji');
-            $table->integer('points');
+            $table->string('email')->unique();
+            $table->string('otp');
+            $table->timestamp('expires_at');
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('reactions');
+        Schema::dropIfExists('otps');
     }
 };
+
+
+

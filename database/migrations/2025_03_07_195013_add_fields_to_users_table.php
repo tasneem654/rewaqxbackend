@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('Points')->nullable()->default(0); // Points (integer, nullable, default 0)
+            $table->integer('points')->nullable()->default(0); // Points (integer, nullable, default 0)
             $table->timestamp('otp_expiration')->nullable(); // OTP expiration (timestamp, nullable)
             $table->boolean('isManager')->default(false); // isManager (boolean, default false)
             $table->string('otp', 6)->nullable(); // OTP (string, max length 6, nullable)
@@ -27,7 +27,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'Points',
+                'points',
                 'otp_expiration',
                 'isManager',
                 'otp',
