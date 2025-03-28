@@ -166,3 +166,53 @@ input.form-control:focus {
     margin-bottom: 5px;
     text-align: left;
 }
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .login-background {
+        height: 200px;
+        flex: none;
+    }
+
+    .background-img {
+        height: 100%;
+        width: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .login-form {
+        padding: 20px;
+    }
+
+    .form-box {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    .logo-img {
+        height: 30px;
+    }
+
+    .form-title {
+        font-size: 18px;
+    }
+
+    .welcome-message {
+        font-size: 14px;
+    }
+
+    .login-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    input.form-control {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+}
