@@ -3,14 +3,34 @@
 // app/Models/User.php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
-    protected $fillable = ['email'];
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    // added 
+    protected function casts(): array
+    {
+        return [
+           'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            
+        ];
+    }
 
     // Define the relationship to Profile
     public function profile()
@@ -35,4 +55,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reaction::class);
     }
+    
+
 }

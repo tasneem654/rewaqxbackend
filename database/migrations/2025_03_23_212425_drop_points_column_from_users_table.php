@@ -15,7 +15,7 @@ class DropPointsColumnFromUsersTable extends Migration
     {
         // Drop the 'points' column from the 'users' table
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('Points');
+            $table->dropColumn('points');
         });
     }
 
