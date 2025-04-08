@@ -9,10 +9,10 @@ class OTP extends Model
 {
     use HasFactory;
 
-    // Define the table name if it's different from the default
+    // Define the table name 
     protected $table = 'otps';
 
-    // Define fillable fields
+  
     protected $fillable = [
         'email',
         'otp',
