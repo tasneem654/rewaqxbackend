@@ -5,6 +5,10 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserController;
+
+
+Route::get('/user/{id}', [UserController::class, 'show']);
 
 // Route to fetch all posts (API endpoint)
 Route::get('/posts', [PostController::class, 'index']);
