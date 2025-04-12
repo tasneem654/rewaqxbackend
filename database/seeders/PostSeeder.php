@@ -13,7 +13,6 @@ class PostSeeder extends Seeder
       Post::create([
           'user_id' => 1, // Replace with the ID of an existing user
           'content' => 'Just secured the MegaTech partnership! 🌟 This is a huge step forward for our team’s vision and growth goals. Proud of what we’ve accomplished together!',
-          'comments' => 6,
           'image_path' => null,
           'created_at' => now()->subHours(2), // Post was created 2 hours ago
       ]);
@@ -21,7 +20,6 @@ class PostSeeder extends Seeder
       Post::create([
           'user_id' => 1, // Replace with the ID of an existing user
           'content' => 'We’re working on a new project — a smart task management system to make work life easier for everyone. Excited to see how this turns out! 🌟 Got ideas? Drop them my way! 😊',
-          'comments' => 10,
           'image_path' => 'office.png',
           'created_at' => now()->subHours(3), // Post was created 3 hours ago
       ]);
