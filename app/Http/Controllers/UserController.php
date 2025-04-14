@@ -16,7 +16,7 @@ class UserController extends Controller
   
       return response()->json([
           'name' => $user->profile->name ?? 'User',
-          'points' => $user->points->sum('totalPoints') ?? 0,
+          'points' => $user->points->totalPoints ?? 0,
           'role' => $user->profile->role ?? 'employee',
           'department' => $user->profile->department ?? 'company',
       ]);
