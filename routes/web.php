@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
+use App\Http\Controllers\Admin\Auth\ResetPasswordController;
 
 // Homepage route
 Route::get('/', function () {
@@ -31,3 +33,15 @@ Route::get('/postsManagement', function () {
 // Additional route for posts (controller method)
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
+
+// عرض صفحة forgot password
+Route::get('/admin/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');
+
+// إرسال رابط لإيميل الأدمن
+Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
+
+// عرض صفحة تعيين كلمة المرور الجديدة
+Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
+
+// تنفيذ التحديث
+Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');

@@ -16,8 +16,15 @@
             <h2 class="form-title">Login</h2>
             <p class="welcome-message">Welcome back</p>
 
-            <form method="POST" action="{{ route('admin.login.submit') }}">
+            <form method="POST" action="{{ route('admin.login.submit') }}" onsubmit="return validateForm()">
                 @csrf
+
+                @if($errors->any())
+                    <div class="error-box">
+                        <span class="error-icon">⚠️</span>
+                        <span class="error-message">Email or password is incorrect.</span>
+                    </div>
+                @endif
 
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -36,7 +43,7 @@
                 </div>
 
                 <div class="forgot-password">
-                    <a href="#">Forgot password?</a>
+                <a href="{{ route('admin.password.request') }}">Forgot password?</a>
                 </div>
 
                 <button type="submit" class="login-button">Log In</button>
@@ -45,9 +52,35 @@
     </div>
 </div>
 <div class="bottom-line"></div>
-
 @endsection
 
 @section('styles')
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+@endsection
+
+@section('scripts')
+<script>
+    function validateForm() {
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        let valid = true;
+
+        email.style.borderColor = '#ccc';
+        password.style.borderColor = '#ccc';
+
+        if (!email.value.includes('@') || email.value.length < 6) {
+            email.style.borderColor = 'red';
+            email.focus();
+            valid = false;
+        }
+
+        if (password.value.length < 6) {
+            password.style.borderColor = 'red';
+            password.focus();
+            valid = false;
+        }
+
+        return valid;
+    }
+</script>
 @endsection
