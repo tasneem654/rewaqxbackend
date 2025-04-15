@@ -39,8 +39,8 @@ class ReactionController extends Controller
 
         // Check if the user has enough points
         if ($userPoints->totalPoints < $request->points) {
-            return response()->json(['error' => 'Not enough points'], 400);
-        }
+          return response()->json(['error' => 'Not enough points'], 400);
+      }
 
         // Deduct points from the user
         $userPoints->decrement('totalPoints', $request->points);
