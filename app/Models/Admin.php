@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\AdminResetPasswordNotification; 
 
 class Admin extends Authenticatable
 {
@@ -21,4 +22,10 @@ class Admin extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    // recovery link!
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new AdminResetPasswordNotification($token));
+    }
 }
