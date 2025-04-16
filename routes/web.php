@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController;
+use App\Http\Controllers\PostManagementController;
+
 
 // Homepage route
 Route::get('/', function () {
@@ -25,16 +27,16 @@ Route::get('/empManagement', function () {
     return view('admin.empManagement');
 });
 
-// Admin routes for posts management
-Route::get('/postsManagement', function () {
-    return view('admin.postsManagement');  // This assumes the file is in resources/views/admin
-});
 
 // Additional route for posts (controller method)
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
+// Admin routes for posts management
+Route::get('/postsManagement', [PostManagementController::class, 'index'])
+     ->name('posts.management');
+Route::post('/postsManagement/delete', [PostManagementController::class, 'deletePosts'])->name('admin.posts.delete');
 
-<<<<<<< HEAD
+
 Route::get('/images/{path}', function ($path) {
   // The full path now comes from the URL parameter
   $filePath = storage_path('app/public/' . $path);
@@ -49,7 +51,6 @@ Route::get('/images/{path}', function ($path) {
   ]);
 })->where('path', '.*');
 
-=======
 // عرض صفحة forgot password
 Route::get('/admin/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');
 
@@ -61,4 +62,3 @@ Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'sh
 
 // تنفيذ التحديث
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
->>>>>>> fdc74b6cf34bc9de537e1d78778faff48b2e4c2d
