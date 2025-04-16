@@ -31,3 +31,18 @@ Route::get('/postsManagement', function () {
 // Additional route for posts (controller method)
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
+
+Route::get('/images/{path}', function ($path) {
+  // The full path now comes from the URL parameter
+  $filePath = storage_path('app/public/' . $path);
+  
+  if (!file_exists($filePath)) {
+      abort(404);
+  }
+
+  return response()->file($filePath, [
+      'Content-Type' => mime_content_type($filePath),
+      'Access-Control-Allow-Origin' => '*'
+  ]);
+})->where('path', '.*');
+

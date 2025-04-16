@@ -15,6 +15,7 @@ class PostSeeder extends Seeder
           'content' => 'Just secured the MegaTech partnership! 🌟 This is a huge step forward for our team’s vision and growth goals. Proud of what we’ve accomplished together!',
           'image_path' => null,
           'created_at' => now()->subHours(2), // Post was created 2 hours ago
+          
       ]);
   
       Post::create([
