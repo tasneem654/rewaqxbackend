@@ -16,6 +16,11 @@ class PostController extends Controller
                 if ($post->image_path) {
                     $post->image_path = url('/images/' . $post->image_path);
                 }
+
+                 // Convert user profile image to URL
+                if ($post->user->profile->image) {
+                  $post->user->image = url('/images/' . $post->user->profile->image);
+              }
                 return $post;
             });
 
@@ -35,7 +40,7 @@ class PostController extends Controller
         }
 
         $post = Post::create([
-            'user_id' => 3,
+            'user_id' => 1,
             'content' => $request->content,
             'image_path' => $imagePath, // stores as "images/filename.jpg"
         ]);
