@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController;
+use App\Http\Controllers\PostManagementController;
+
 
 // Homepage route
 Route::get('/', function () {
@@ -25,14 +27,29 @@ Route::get('/empManagement', function () {
     return view('admin.empManagement');
 });
 
-// Admin routes for posts management
-Route::get('/postsManagement', function () {
-    return view('admin.postsManagement');  // This assumes the file is in resources/views/admin
-});
 
 // Additional route for posts (controller method)
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
+// Admin routes for posts management
+Route::get('/postsManagement', [PostManagementController::class, 'index'])
+     ->name('posts.management');
+Route::post('/postsManagement/delete', [PostManagementController::class, 'deletePosts'])->name('admin.posts.delete');
+
+
+Route::get('/images/{path}', function ($path) {
+  // The full path now comes from the URL parameter
+  $filePath = storage_path('app/public/' . $path);
+  
+  if (!file_exists($filePath)) {
+      abort(404);
+  }
+
+  return response()->file($filePath, [
+      'Content-Type' => mime_content_type($filePath),
+      'Access-Control-Allow-Origin' => '*'
+  ]);
+})->where('path', '.*');
 
 // عرض صفحة forgot password
 Route::get('/admin/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');
@@ -44,4 +61,4 @@ Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendRes
 Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
 
 // تنفيذ التحديث
-Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
+Router::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');

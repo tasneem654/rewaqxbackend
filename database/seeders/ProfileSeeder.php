@@ -1,28 +1,47 @@
 <?php
-// database/seeders/ProfileSeeder.php
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class ProfileSeeder extends Seeder
 {
     public function run()
     {
-        // Get all users
+        // Clear existing profiles
+        Profile::truncate();
+        
         $users = User::all();
+        $profiles = [
+            [
+                'name' => 'Arwa Tawfiq',
+                'role' => 'Software Engineer',
+                'department' => 'IT Department',
+                'dateOfBirth' => '2001-05-03',
+                'image' => 'profile_images/avatar.png'
+            ],
+            [
+                'name' => 'Roaa Alhattami',
+                'role' => 'Network Engineer',
+                'department' => 'IT Department',
+                'dateOfBirth' => '2003-09-20',
+                'image' => 'profile_images/avatar.png'
+            ],
+            [
+                'name' => 'Tasneem Alhattami',
+                'role' => 'Software Engineer',
+                'department' => 'IT Department',
+                'dateOfBirth' => '2002-09-21',
+                'image' => 'profile_images/avatar.png'
+            ]
+        ];
 
-        // Create a profile for each user
-        foreach ($users as $user) {
+        foreach ($users as $index => $user) {
             Profile::create([
                 'user_id' => $user->id,
-                'name' => 'Tasneem Alhattami ' , // Example name
-                'role' => 'Software Engineer', // Example role
-                'department' => 'IT Department', // Example department
-                'dateOfBirth' => '2002-09-21', // Example date of birth
-                'image' => 'profile_images/avatar.png'
+                ...$profiles[$index] // Spread operator for profile data
             ]);
         }
     }

@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ asset('css/postsManagement.css') }}" />
   <script src="https://unpkg.com/feather-icons"></script>
+  <!-- Favicon -->
+  <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" />
 </head>
 <body>
   <header>
@@ -38,7 +40,13 @@
       <div class="actions">
         <h1>Posts Management</h1>
         <div class="action-buttons">
-          <button class="remove-btn"><i data-feather="trash-2"></i>&nbsp;&nbsp; Delete Post</button>
+          <form id="deleteForm" method="POST" action="{{ route('admin.posts.delete') }}">
+            @csrf
+            <input type="hidden" name="post_ids[]" id="postIdsInput">
+            <button type="button" class="remove-btn" id="deleteBtn">
+              <i data-feather="trash-2"></i>&nbsp;&nbsp; Delete Post
+            </button>
+          </form>
         </div>
       </div>
 
@@ -57,25 +65,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="first-row">
-              <td><input type="checkbox"/></td>
-              <td>2354</td>
-              <td>Arwa Ghelan</td>
-              <td>Just secured the ...</td>
-              <td>photo.jpg</td>
-              <td>March 23, 2024</td>
-              <td>84</td>
+            @foreach($posts as $post)
+            <tr class="{{ $loop->first ? 'first-row' : '' }}">
+              <td>
+                <input type="checkbox" class="post-checkbox" value="{{ $post['id'] ?? '' }}" />
+              </td>
+              <td>{{ $post['id'] ?? '—' }}</td>
+              <td>{{ $post['user_name'] ?? 'Unknown' }}</td>
+              <td>{{ \Illuminate\Support\Str::limit($post['content'] ?? '', 20) }}</td>
+              <td>
+                @if(!empty($post['image']))
+                  <a href="{{ $post['image_full'] ?? '#' }}" target="_blank">{{ $post['image'] }}</a>
+                @else
+                  No Image
+                @endif
+              </td>
+              <td>{{ $post['created_at'] ?? '—' }}</td>
+              <td>{{ $post['reactions_count'] ?? 0 }}</td>
             </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>2334</td>
-              <td>Arwa Ghelan</td>
-              <td>Just secured the ...</td>
-              <td>photo.jpg</td>
-              <td>March 23, 2024</td>
-              <td>84</td>
-            </tr>
-            <!-- Repeat more rows as needed -->
+            @endforeach
           </tbody>
         </table>
         <img src="{{ asset('images/Group 42251.png') }}" alt="Next" class="arrow right-arrow">
@@ -85,6 +93,40 @@
 
   <script>
     feather.replace();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkboxes = document.querySelectorAll('.post-checkbox');
+      const postIdsInput = document.getElementById('postIdsInput');
+      const deleteBtn = document.getElementById('deleteBtn');
+      const deleteForm = document.getElementById('deleteForm');
+
+      deleteBtn.addEventListener('click', function () {
+        const selected = Array.from(checkboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        if (selected.length === 0) {
+          alert('Please select at least one post to delete.');
+          return;
+        }
+
+        if (confirm('Are you sure you want to delete the selected post(s)?')) {
+          // Clear existing hidden inputs if any
+          document.querySelectorAll('#deleteForm input[name="post_ids[]"]').forEach(el => el.remove());
+
+          // Add one hidden input for each post ID
+          selected.forEach(id => {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'post_ids[]';
+            hiddenInput.value = id;
+            deleteForm.appendChild(hiddenInput);
+          });
+
+          deleteForm.submit();
+        }
+      });
+    });
   </script>
 </body>
 </html>
