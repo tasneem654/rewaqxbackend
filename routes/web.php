@@ -61,4 +61,4 @@ Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendRes
 Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
 
 // تنفيذ التحديث
-Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
+Router::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
