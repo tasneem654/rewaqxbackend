@@ -34,3 +34,7 @@
 </div>
 <div class="bottom-line"></div>
 @endsection
+
+@section('styles')
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+@endsection
