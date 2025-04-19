@@ -62,3 +62,13 @@ Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'sh
 
 // تنفيذ التحديث
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
+
+use App\Http\Controllers\EmployeeController;
+
+// Routes for employee management
+Route::get('/empManagement', [EmployeeController::class, 'index'])->name('employees.index'); // عرض الموظفين
+Route::get('/empManagement/create', [EmployeeController::class, 'create'])->name('employees.create'); // صفحة إضافة موظف
+Route::post('/empManagement', [EmployeeController::class, 'store'])->name('employees.store'); // حفظ الموظف
+Route::get('/empManagement/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit'); // صفحة تعديل موظف
+Route::put('/empManagement/{id}', [EmployeeController::class, 'update'])->name('employees.update'); // تحديث الموظف
+Route::delete('/empManagement/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy'); // حذف الموظف
