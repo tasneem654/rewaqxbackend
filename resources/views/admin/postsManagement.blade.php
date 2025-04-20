@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ asset('css/postsManagement.css') }}" />
   <script src="https://unpkg.com/feather-icons"></script>
+  <!-- Favicon -->
+  <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png" />
 </head>
 <body>
   <header>

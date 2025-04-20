@@ -61,6 +61,7 @@ Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendRes
 Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
 
 // تنفيذ التحديث
+<<<<<<< HEAD
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 
 use App\Http\Controllers\EmployeeController;
@@ -72,3 +73,6 @@ Route::post('/empManagement', [EmployeeController::class, 'store'])->name('emplo
 Route::get('/empManagement/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit'); // صفحة تعديل موظف
 Route::put('/empManagement/{id}', [EmployeeController::class, 'update'])->name('employees.update'); // تحديث الموظف
 Route::delete('/empManagement/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy'); // حذف الموظف
+=======
+Router::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
+>>>>>>> cf56698e7f4d5aa2cf606f81a4d3ece4376e3982
