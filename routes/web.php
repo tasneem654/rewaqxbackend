@@ -64,11 +64,5 @@ Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendRes
 // new password page
 Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
 
-// new password update
-Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
-
-//log out
-Route::get('logout', function () {
-    Auth::logout();
-    return redirect('/admin/login');
-})->name('logout');
+// تنفيذ التحديث
+Router::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');

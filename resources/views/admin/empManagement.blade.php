@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Employees Management</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
-  <script src="https://unpkg.com/feather-icons"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees Management</title>
+    <!-- الربط بملفات CSS الخاصة بك -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}" />
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
   <header>
@@ -34,13 +35,10 @@
       </nav>
     </aside>
 
-    <script>
-      feather.replace();
-    </script>
-
     <section class="content">
       <h1>Employees Management</h1>
 
+      <!-- Add New Employee Button -->
       <div class="actions">
         <div class="search-container">
           <i data-feather="search" class="search-icon"></i>
@@ -48,10 +46,11 @@
         </div>
         <div class="action-buttons">
           <button class="remove-btn"><i data-feather="trash-2"></i>&nbsp;&nbsp; Remove Employee</button>
-          <button class="add-btn"> +&nbsp;&nbsp;Add New Employee</button>
+          <button class="add-btn" onclick="openPopup()">+ Add New Employee</button>
         </div>
       </div>
 
+      <!-- Employee Table -->
       <div class="table-wrapper">
         <img src="{{ asset('images/Group 42251.png') }}" alt="Previous" class="arrow left-arrow">
         <table>
@@ -63,94 +62,34 @@
               <th>Email</th>
               <th>Department</th>
               <th>Role</th>
-              <th>Manger</th>
+              <th>Manager</th>
             </tr>
           </thead>
           <tbody>
+            @foreach($employees as $employee)
             <tr>
               <td><input type="checkbox" /></td>
-              <td>4111813</td>
-              <td>Arwa Ghelan</td>
-              <td>4010552@upm.edu.sa</td>
-              <td>Marketing Department</td>
-              <td>Marketing Specialist</td>
+              <td>{{ $employee->id }}</td>
+              <td>{{ $employee->name }}</td>
+              <td>{{ $employee->email }}</td>
+              <td>{{ $employee->department ?? 'N/A' }}</td>
+              <td>{{ $employee->role ?? 'N/A' }}</td>
               <td>
                 <label class="switch">
-                  <input type="checkbox" checked />
+                  <input type="checkbox" {{ $employee->is_manager ? 'checked' : '' }} />
                   <span class="slider"></span>
                 </label>
               </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>4111814</td>
-              <td>John Doe</td>
-              <td>4010553@upm.edu.sa</td>
-              <td>Sales Department</td>
-              <td>Sales Executive</td>
               <td>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
+                <a href="{{ route('employees.edit', $employee->id) }}">Edit</a>
+                <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display:inline;">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit">Delete</button>
+                </form>
               </td>
             </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>4111815</td>
-              <td>Salma Tariq</td>
-              <td>4010554@upm.edu.sa</td>
-              <td>HR Department</td>
-              <td>HR Manager</td>
-              <td>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>4111816</td>
-              <td>Omar Khalid</td>
-              <td>4010555@upm.edu.sa</td>
-              <td>IT Department</td>
-              <td>Software Engineer</td>
-              <td>
-                <label class="switch">
-                  <input type="checkbox" checked />
-                  <span class="slider"></span>
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>4111817</td>
-              <td>Lina Saeed</td>
-              <td>4010556@upm.edu.sa</td>
-              <td>Marketing Department</td>
-              <td>Marketing Specialist</td>
-              <td>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" /></td>
-              <td>4111818</td>
-              <td>Faisal Ahmed</td>
-              <td>4010557@upm.edu.sa</td>
-              <td>Finance Department</td>
-              <td>Accountant</td>
-              <td>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </td>
-            </tr>
+            @endforeach
           </tbody>
         </table>
         <img src="{{ asset('images/Group 42251.png') }}" alt="Next" class="arrow right-arrow">
@@ -158,8 +97,41 @@
     </section>
   </main>
 
+  <!-- Popup Form for Adding New Employee -->
+  <div class="popup-overlay" id="popupOverlay"></div>
+  <div class="popup" id="popupForm">
+    <h2>Add New Employee</h2>
+    <form method="POST" action="{{ route('employees.store') }}">
+      @csrf
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit" class="add-btn">Add Employee</button>
+      <button type="button" class="add-btn" onclick="closePopup()">Cancel</button>
+    </form>
+  </div>
+
   <script>
     feather.replace();
+
+    function openPopup() {
+      document.getElementById('popupOverlay').style.display = 'block';
+      document.getElementById('popupForm').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popupOverlay').style.display = 'none';
+      document.getElementById('popupForm').style.display = 'none';
+    }
   </script>
 </body>
 </html>
