@@ -67,7 +67,6 @@ Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'sh
 
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 
-use App\Http\Controllers\EmployeeController;
 
 // Routes for employee management
 Route::get('/empManagement', [EmployeeController::class, 'index'])->name('employees.index'); // عرض الموظفين
