@@ -6,6 +6,8 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\VoucherController;
+
 
 
 Route::get('/user/{id}', [UserController::class, 'show']);
@@ -31,3 +33,7 @@ Route::post('posts/{postId}/reactions', [ReactionController::class, 'store']);
 //OTP
 Route::post('/send-otp', [OTPController::class, 'sendOTP']);
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
+
+Route::get('/vouchers', [VoucherController::class, 'index']);
+Route::get('/vouchers/{id}', [VoucherController::class, 'index']);
+Route::post('/vouchers/{id}/redeem', [VoucherController::class, 'redeem']);
