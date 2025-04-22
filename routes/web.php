@@ -8,9 +8,7 @@ use App\Http\Controllers\Admin\Auth\ResetPasswordController;
 use App\Http\Controllers\PostManagementController;
 use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Auth;
-
-
-
+use App\Http\Controllers\EmployeeController;
 
 // Homepage route
 Route::get('/', function () {
@@ -28,9 +26,12 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
 
 // Admin routes for employee management
 Route::get('/empManagement', function () {
-    return view('admin.empManagement');
+    $employees = \App\Models\User::all();  // جلب كل الموظفين
+    return view('admin.empManagement', compact('employees')); // تمرير المتغير إلى الـ View
 });
 
+// Route for storing new employee
+Route::post('/empManagement', [EmployeeController::class, 'store'])->name('employees.store');
 
 // Additional route for posts (controller method)
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
@@ -40,7 +41,7 @@ Route::get('/postsManagement', [PostManagementController::class, 'index'])
      ->name('posts.management');
 Route::post('/postsManagement/delete', [PostManagementController::class, 'deletePosts'])->name('admin.posts.delete');
 
-
+// Route to display images from storage
 Route::get('/images/{path}', function ($path) {
   // The full path now comes from the URL parameter
   $filePath = storage_path('app/public/' . $path);
@@ -55,19 +56,15 @@ Route::get('/images/{path}', function ($path) {
   ]);
 })->where('path', '.*');
 
-// forgot password
+// Forgot password routes
 Route::get('/admin/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('admin.password.request');
-
-// email link
 Route::post('/admin/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('admin.password.email');
 
-// new password page
+// Reset password routes
 Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('admin.password.reset');
-
-// تنفيذ التحديث
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 
-//log out
+// Log out
 Route::get('logout', function () {
     Auth::logout();
     return redirect('/admin/login');
