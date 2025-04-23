@@ -2,76 +2,176 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Profile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
 {
-    // عرض جميع الموظفين
-    public function index()
-    {
-        // استرجاع جميع الموظفين (يمكنك إضافة التصفية مثل is_admin)
-        $employees = User::all(); 
-        return view('admin.empManagement', compact('employees')); // عرض البيانات في الـ Blade
+    public function index(Request $request)
+{
+    $query = User::with('profile')->orderBy('id');
+
+    if ($request->has('search')) {
+        $search = $request->input('search');
+
+        $query->where(function ($q) use ($search) {
+            $q->where('email', 'like', "%{$search}%")
+              ->orWhereHas('profile', function ($q2) use ($search) {
+                  $q2->where('name', 'like', "%{$search}%")
+                     ->orWhere('role', 'like', "%{$search}%");
+              });
+        });
     }
 
-    // عرض صفحة إنشاء موظف جديد
-    public function create()
-    {
-        return view('admin.createEmployee'); // صفحة لكتابة بيانات الموظف الجديد
-    }
+    $employees = $query->get();
 
-    // تخزين موظف جديد في قاعدة البيانات
+    return view('admin.empManagement', compact('employees'));
+}
+
+
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'department' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'dateOfBirth' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // إنشاء الموظف في قاعدة البيانات
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'is_admin' => false, // عدم إعطائه صلاحية "مدير"
-        ]);
+        DB::transaction(function () use ($request) {
+            $user = User::create([
+                'email' => $request->email,
+                'isManager' => false
+            ]);
 
-        return redirect()->route('employees.index')->with('success', 'Employee added successfully');
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('profile_images', 'public');
+            }
+
+            Profile::create([
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'department' => $request->department,
+                'role' => $request->role,
+                'dateOfBirth' => $request->dateOfBirth,
+                'image' => $imagePath,
+            ]);
+        });
+
+        return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
     }
 
-    // عرض صفحة تعديل بيانات موظف
     public function edit($id)
     {
-        $employee = User::findOrFail($id); // جلب بيانات الموظف حسب الـ ID
-        return view('admin.editEmployee', compact('employee')); // عرض البيانات في صفحة التعديل
+        $employee = User::with('profile')->findOrFail($id);
+        
+        if(request()->wantsJson()) {
+            return response()->json([
+                'id' => $employee->id,
+                'name' => optional($employee->profile)->name,
+                'email' => $employee->email,
+                'department' => optional($employee->profile)->department,
+                'role' => optional($employee->profile)->role,
+                'dateOfBirth' => optional($employee->profile)->dateOfBirth,
+                'isManager' => $employee->isManager,
+                'image' => optional($employee->profile)->image ? asset('storage/' . $employee->profile->image) : null
+            ]);
+        }
+        
+        return view('admin.employees.edit', compact('employee'));
     }
 
-    // تحديث بيانات الموظف
     public function update(Request $request, $id)
     {
-        $employee = User::findOrFail($id);
-
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id, // التحقق من عدم تكرار الإيميل
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'department' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'dateOfBirth' => 'required|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $employee->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        DB::transaction(function () use ($request, $id) {
+            $user = User::findOrFail($id);
+            $user->update(['email' => $request->email]);
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully');
+            $profileData = [
+                'name' => $request->name,
+                'department' => $request->department,
+                'role' => $request->role,
+                'dateOfBirth' => $request->dateOfBirth
+            ];
+
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($user->profile && $user->profile->image) {
+                    Storage::disk('public')->delete($user->profile->image);
+                }
+                $profileData['image'] = $request->file('image')->store('profile_images', 'public');
+            }
+
+            $user->profile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $profileData
+            );
+        });
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
-    // حذف موظف من قاعدة البيانات
+    public function updateImage(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $user = User::with('profile')->findOrFail($id);
+
+        // Delete old image if exists
+        if ($user->profile && $user->profile->image) {
+            Storage::disk('public')->delete($user->profile->image);
+        }
+
+        $imagePath = $request->file('image')->store('profile_images', 'public');
+        
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['image' => $imagePath]
+        );
+
+        return response()->json([
+            'success' => true,
+            'image_url' => asset('storage/' . $imagePath)
+        ]);
+    }
+
+    public function toggleManager(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->isManager = $request->input('isManager') ? 1 : 0;
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
     public function destroy($id)
     {
-        $employee = User::findOrFail($id); // جلب الموظف
-        $employee->delete(); // حذف الموظف
+        DB::transaction(function () use ($id) {
+            $user = User::findOrFail($id);
+            if ($user->profile && $user->profile->image) {
+                Storage::disk('public')->delete($user->profile->image);
+            }
+            $user->profile()->delete();
+            $user->delete();
+        });
 
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully');
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
 }

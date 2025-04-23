@@ -67,7 +67,10 @@ Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'sh
 
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 
-
+Route::post('/empManagement/{id}/toggle-manager', [EmployeeController::class, 'toggleManager'])
+    ->name('employees.toggle-manager');
+Route::post('/employees/{employee}/update-image', [EmployeeController::class, 'updateImage'])
+    ->name('employees.update-image');
 // Routes for employee management
 Route::get('/empManagement', [EmployeeController::class, 'index'])->name('employees.index'); // عرض الموظفين
 Route::get('/empManagement/create', [EmployeeController::class, 'create'])->name('employees.create'); // صفحة إضافة موظف
