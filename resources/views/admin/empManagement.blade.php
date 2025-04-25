@@ -238,6 +238,7 @@
               <th>Department</th>
               <th>Role</th>
               <th>Date of Birth</th>
+              <th>Points</th>
               <th>Manager</th>
             </tr>
           </thead>
@@ -273,6 +274,8 @@
                   N/A
                 @endif
               </td>
+              <td>{{ optional($employee->points)->totalPoints ?? 0 }}</td>
+
               <td>
                 <label class="switch">
                   <input type="checkbox" 
@@ -315,6 +318,10 @@
       <div>
         <label for="role">Role</label>
         <input type="text" id="role" name="role" required />
+      </div>
+      <div>
+        <label for="points">Initial Points</label>
+        <input type="number" id="points" name="points" value="0" min="0" />
       </div>
       <div>
         <label for="image">Profile Image</label>
@@ -549,15 +556,46 @@
     }
 
     function confirmRemove() {
-        const selected = document.querySelectorAll('tbody input[type="checkbox"]:checked');
-        selected.forEach(checkbox => {
-            const form = checkbox.closest('tr').querySelector('.delete-form');
-            if (form) {
-                form.submit();
+    const selected = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+    
+    if (selected.length === 0) {
+        closeConfirmationPopup();
+        return;
+    }
+
+    // Create an array of delete promises for each selected employee
+    const deletePromises = Array.from(selected).map(checkbox => {
+        const row = checkbox.closest('tr');
+        const userId = row.querySelector('td:nth-child(2)').textContent; // Gets ID from 2nd column
+        
+        return fetch(`/employees/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
-        closeConfirmationPopup();
-    }
+    });
+
+    // Execute all delete requests
+    Promise.all(deletePromises)
+        .then(responses => {
+            // Check if all deletions were successful
+            const allSuccess = responses.every(response => response.ok);
+            if (!allSuccess) throw new Error('Some deletions failed');
+            
+            // Reload the page to see changes
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting employees. Please check console for details.');
+        })
+        .finally(() => {
+            closeConfirmationPopup();
+        });
+}
   </script>
 </body>
 </html>

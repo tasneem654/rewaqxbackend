@@ -24,11 +24,7 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->middleware('App\Http\Middleware\RedirectIfNotAdmin')
     ->name('admin.dashboard');
 
-// Admin routes for employee management
-Route::get('/empManagement', function () {
-    $employees = \App\Models\User::all();  // جلب كل الموظفين
-    return view('admin.empManagement', compact('employees')); // تمرير المتغير إلى الـ View
-});
+
 
 // Route for storing new employee
 Route::post('/empManagement', [EmployeeController::class, 'store'])->name('employees.store');
@@ -66,20 +62,15 @@ Route::get('/admin/reset-password/{token}', [ResetPasswordController::class, 'sh
 // تنفيذ التحديث
 
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
-
-Route::post('/empManagement/{id}/toggle-manager', [EmployeeController::class, 'toggleManager'])
-    ->name('employees.toggle-manager');
+Route::post('/employees/{employee}/toggle-manager', [EmployeeController::class, 'toggleManager'])->name('employees.toggle-manager');
 Route::post('/employees/{employee}/update-image', [EmployeeController::class, 'updateImage'])
     ->name('employees.update-image');
-// Routes for employee management
+Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');// Routes for employee management
 Route::get('/empManagement', [EmployeeController::class, 'index'])->name('employees.index'); // عرض الموظفين
 Route::get('/empManagement/create', [EmployeeController::class, 'create'])->name('employees.create'); // صفحة إضافة موظف
 Route::post('/empManagement', [EmployeeController::class, 'store'])->name('employees.store'); // حفظ الموظف
 Route::get('/empManagement/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit'); // صفحة تعديل موظف
 Route::put('/empManagement/{id}', [EmployeeController::class, 'update'])->name('employees.update'); // تحديث الموظف
-Route::delete('/empManagement/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy'); // حذف الموظف
-
-//Router::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 Route::post('/admin/reset-password', [ResetPasswordController::class, 'reset'])->name('admin.password.update');
 
 // Log out

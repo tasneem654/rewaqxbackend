@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Points;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,19 +13,20 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
 {
-    $query = User::with('profile')->orderBy('id');
+    $query = User::with(['profile', 'points'])->orderBy('id');
 
     if ($request->has('search')) {
-        $search = $request->input('search');
+      $search = $request->input('search');
 
-        $query->where(function ($q) use ($search) {
-            $q->where('email', 'like', "%{$search}%")
-              ->orWhereHas('profile', function ($q2) use ($search) {
-                  $q2->where('name', 'like', "%{$search}%")
-                     ->orWhere('role', 'like', "%{$search}%");
-              });
-        });
-    }
+      $query->where(function ($q) use ($search) {
+          $q->where('email', 'like', "%{$search}%")
+            ->orWhereHas('profile', function ($q2) use ($search) {
+                $q2->where('name', 'like', "%{$search}%")
+                   ->orWhere('role', 'like', "%{$search}%");
+            });
+      });
+  }
+  
 
     $employees = $query->get();
 
@@ -40,6 +42,7 @@ class EmployeeController extends Controller
             'department' => 'required|string|max:255',
             'role' => 'required|string|max:255',
             'dateOfBirth' => 'required|date',
+            'points' => 'nullable|integer|min:0', // Add points validation
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
@@ -62,6 +65,12 @@ class EmployeeController extends Controller
                 'dateOfBirth' => $request->dateOfBirth,
                 'image' => $imagePath,
             ]);
+
+                // Create points record
+            Points::create([
+              'user_id' => $user->id,
+              'totalPoints' => $request->points ?? 0
+          ]);
         });
 
         return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
@@ -162,16 +171,23 @@ class EmployeeController extends Controller
     }
 
     public function destroy($id)
-    {
-        DB::transaction(function () use ($id) {
-            $user = User::findOrFail($id);
-            if ($user->profile && $user->profile->image) {
-                Storage::disk('public')->delete($user->profile->image);
-            }
-            $user->profile()->delete();
-            $user->delete();
-        });
+{
+    DB::transaction(function () use ($id) {
+        $user = User::findOrFail($id);
+        if ($user->profile && $user->profile->image) {
+            Storage::disk('public')->delete($user->profile->image);
+        }
+        $user->profile()->delete();
+        $user->delete();
+        $user->points()->delete(); // Add this line
 
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
+    });
+
+    if (request()->wantsJson()) {
+        return response()->json(['success' => true]);
     }
+
+    return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
+}
+
 }
