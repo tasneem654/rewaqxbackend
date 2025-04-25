@@ -1,14 +1,12 @@
-/* === General Styling === */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Quicksand", sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
     background-color: #f8f9fa;
     color: #000;
-  }
-  
-  header {
+}
+
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,118 +16,113 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-  }
-  
-  .header-container {
+}
+
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  }
-  
-  .logo {
+}
+
+.logo {
     margin-left: -20px;
-  }
-  .logo img {
+}
+.logo img {
     height: 35px;
-  }
-  
-  .user-profile {
+}
+
+.user-profile {
     display: flex;
     align-items: center;
     gap: 6px;
     font-weight: 500;
-    color: #6E6E6E;
-  }
-  
-  .profile-img {
+    color: #6e6e6e;
+}
+.profile-img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-  }
-  .dropdown-icon {
+}
+.dropdown-icon {
     width: 16px;
     height: 16px;
     margin-top: 2px;
-  }
-  
-  /* === Sidebar === */
-  .sidebar {
+}
+
+.sidebar {
     background-color: #ffffff;
     width: 220px;
     height: 100vh;
-    padding-top: 100px;
+    padding-top: 80px;
     position: fixed;
     top: 0;
     left: 0;
     border-right: 1px solid #f1f1f1;
-  }
-  
-  .sidebar nav ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.sidebar nav ul {
     list-style: none;
     padding-left: 0;
     margin: 0;
-  }
-  
-  .sidebar nav ul li {
+}
+.sidebar nav ul li {
     margin: 10px 0;
-  }
-  .sidebar nav ul li a {
+}
+.sidebar nav ul li a {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px 20px;
     font-size: 15px;
     text-decoration: none;
-    color: #6E6E6E;
+    color: #6e6e6e;
     position: relative;
     transition: background-color 0.3s ease;
-  }
-  
-  .sidebar nav ul li a:hover {
+}
+.sidebar nav ul li a:hover {
     background-color: #f2f2f2;
-  }
-  
-  .sidebar nav ul li a.active {
+}
+.sidebar nav ul li a.active {
     background-color: #f9f9f9;
     font-weight: 600;
     color: #000;
-  }
-  .sidebar nav ul li a.active::after {
+}
+.sidebar nav ul li a.active::after {
     content: "";
     position: absolute;
     right: 0;
     top: 0;
     height: 100%;
     width: 4px;
-    background-color: #00c8b3;
+    background-color: rgba(42, 210, 201, 1);
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-  }
-  
-  .sidebar nav ul li a img.icon {
+}
+.sidebar nav ul li i {
+    color: rgba(42, 210, 201, 1);
     width: 20px;
     height: 20px;
-    margin-right: 10px;
-  }
-  
-  /* === Content === */
-  .content {
-    margin-left: 240px;
-    padding: 100px 60px 40px;
-  }
-  
-  .content h1 {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 45px;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 80px 60px 40px;
+}
+
+.content h1 {
+    font-family: "Quicksand", sans-serif;
+    font-size: 30px;
     font-weight: 700;
-    margin-bottom: 20px;
     color: #000;
-    text-align: left;
-  }
-  
-  /* === Actions === */
-  .actions {
+    margin-bottom: 30px;
+    margin-top: -50px;
+}
+
+/* === Actions === */
+.actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,22 +130,22 @@ body {
     margin-bottom: 20px;
     margin-top: 20px;
     width: 100%;
-  }
-  
-  .search-container {
+}
+
+.search-container {
     position: relative;
     flex-grow: 1;
-  }
-  
-  .search-bar {
+}
+
+.search-bar {
     width: 90%;
     padding: 12px 20px;
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 15px;
     padding-left: 40px;
-  }
-  .search-icon {
+}
+.search-icon {
     position: absolute;
     top: 50%;
     left: 12px;
@@ -160,16 +153,16 @@ body {
     width: 18px;
     height: 18px;
     color: #6e6e6e;
-  }
-  
-  /* === Buttons === */
-  .action-buttons {
+}
+
+/* === Buttons === */
+.action-buttons {
     display: flex;
     gap: 10px;
-  }
-  
-  .add-btn,
-  .remove-btn {
+}
+
+.add-btn,
+.remove-btn {
     padding: 10px 22px;
     font-size: 14px;
     border-radius: 8px;
@@ -180,90 +173,91 @@ body {
     vertical-align: middle;
     display: flex;
     align-items: center;
-  }
-  
-  .add-btn {
+}
+
+.add-btn {
     background: linear-gradient(to right, #8e2de2, #4a00e0);
     color: white;
-  }
-  
-  .remove-btn {
-    background-color: #ED2E7E;
+}
+
+.remove-btn {
+    background-color: #ed2e7e;
     color: white;
-  }
-  .remove-btn i {
+}
+.remove-btn i {
     font-size: 12px;
     transform: scale(0.7);
     margin-right: 8px;
-  }
-  
-  /* === Table === */
-  .table-wrapper {
+}
+
+/* === Table === */
+.table-wrapper {
     position: relative;
     margin-top: 20px;
-  }
-  
-  .arrow {
+}
+
+.arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 35px;
     height: 35px;
     cursor: pointer;
-  }
-  
-  .left-arrow {
+}
+
+.left-arrow {
     left: -45px;
-  }
-  
-  .right-arrow {
+}
+
+.right-arrow {
     right: -45px;
-  }
-  
-  
-  table {
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
-  }
-  table th, table td {
-    font-size: 16px;
+}
+table th,
+table td {
+    font-size: 14px;
     padding: 15px;
     border-bottom: 1px solid #ddd;
-    color: #6E6E6E;
+    color: #6e6e6e;
     text-align: center;
-  }
-  table tr:nth-child(even) {
+}
+
+table tr:nth-child(even) {
     background-color: #f9f9f9;
-  }
-  table th input[type="checkbox"] {
+}
+table th input[type="checkbox"] {
     display: none;
-  }
-  table td input[type="checkbox"] {
+}
+table td input[type="checkbox"] {
     width: 20px;
     height: 20px;
-  }
-  
-  /* === Switch (Manager Toggle) === */
-  table td label.switch {
+}
+
+/* === Switch (Manager Toggle) === */
+table td label.switch {
     display: block;
     margin: 0 auto;
-  }
-  
-  .switch {
+}
+
+.switch {
     position: relative;
     display: inline-block;
     width: 52px;
     height: 28px;
-  }
-  
-  .switch input {
+}
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -273,9 +267,9 @@ body {
     background-color: #ccc;
     transition: 0.4s;
     border-radius: 34px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 20px;
@@ -285,17 +279,17 @@ body {
     background-color: white;
     transition: 0.4s;
     border-radius: 50%;
-  }
-  
-  .switch input:checked + .slider {
+}
+
+.switch input:checked + .slider {
     background: linear-gradient(90deg, #1ddbb0, #12c1b6);
-  }
-  .switch input:checked + .slider:before {
+}
+.switch input:checked + .slider:before {
     transform: translateX(26px);
-  }
-  
-  /* === Popup Styling (General & Add Form) === */
-  .popup {
+}
+
+/* === Popup Styling (General & Add Form) === */
+.popup {
     display: none;
     position: fixed;
     top: 50%;
@@ -310,39 +304,39 @@ body {
     max-width: 90%;
     box-sizing: border-box;
     text-align: center;
-  }
-  .popup h2 {
+}
+.popup h2 {
     font-size: 18px;
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  .popup form div {
+}
+
+.popup form div {
     margin-bottom: 15px;
     text-align: left;
-  }
-  .popup label {
+}
+.popup label {
     display: block;
     font-size: 14px;
     margin-bottom: 5px;
     color: #333;
-  }
-  .popup input {
+}
+.popup input {
     width: 100%;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-sizing: border-box;
-  }
-  
-  .popup-buttons {
+}
+
+.popup-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 15px;
-  }
-  .popup .add-btn {
+}
+.popup .add-btn {
     background: linear-gradient(to right, #8e2de2, #4a00e0);
     color: white;
     padding: 10px 24px;
@@ -350,8 +344,8 @@ body {
     border-radius: 8px;
     border: none;
     cursor: pointer;
-  }
-  .popup .cancel-btn {
+}
+.popup .cancel-btn {
     background-color: #ddd;
     color: #333;
     padding: 10px 24px;
@@ -359,13 +353,13 @@ body {
     border-radius: 8px;
     border: none;
     cursor: pointer;
-  }
-  .popup .remove-btn {
-    background-color: #ED2E7E;
+}
+.popup .remove-btn {
+    background-color: #ed2e7e;
     color: white;
-  }
-  
-  .popup-overlay {
+}
+
+.popup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -374,5 +368,38 @@ body {
     width: 100%;
     background: rgba(0, 0, 0, 0.3);
     z-index: 999;
-  }
-  
+}
+
+/* log out */
+.dropdown-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 120px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: rgba(122, 29, 255, 1);
+    padding: 8px 10px;
+    font-size: 14px;
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.dropdown-menu a:hover {
+    color: rgba(42, 210, 201, 1); /* Change text color on hover */
+}

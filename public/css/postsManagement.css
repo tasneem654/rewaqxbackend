@@ -1,5 +1,5 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Quicksand", sans-serif;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -39,7 +39,7 @@ header {
     align-items: center;
     gap: 6px;
     font-weight: 500;
-    color: #6E6E6E;
+    color: #6e6e6e;
 }
 
 .profile-img {
@@ -85,7 +85,7 @@ header {
     padding: 12px 20px;
     font-size: 15px;
     text-decoration: none;
-    color: #6E6E6E;
+    color: #6e6e6e;
     position: relative;
     transition: background-color 0.3s ease;
 }
@@ -133,19 +133,19 @@ header {
 }
 
 .content h1 {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 45px;
+    font-family: "Quicksand", sans-serif;
+    font-size: 30px;
     font-weight: 700;
-    margin-bottom: 0;
     color: #000;
-    text-align: left;
-    flex-grow: 1;
+    margin-bottom: 30px;
+    margin-top: -50px;
 }
 
 .action-buttons {
     display: flex;
     justify-content: flex-end;
     margin-left: 20px;
+    flex-grow: 1;
 }
 
 .remove-btn {
@@ -157,14 +157,14 @@ header {
     border-radius: 8px;
     cursor: pointer;
     border: none;
-    background-color: #ED2E7E;
+    background-color: #ed2e7e;
     color: white;
     margin-bottom: -40px;
 }
 
 .table-wrapper {
     position: relative;
-    margin-top: 20px;
+    margin-top: 60px;
 }
 
 .arrow {
@@ -197,7 +197,7 @@ table th {
     background-color: white;
     font-weight: 700;
     font-size: 18px;
-    color: #ABABAB;
+    color: #ababab;
     text-align: left;
     padding: 20px 22px;
 }
@@ -228,3 +228,36 @@ table img {
     border-radius: 6px;
 }
 
+/* log out */
+.dropdown-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 120px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: rgba(122, 29, 255, 1);
+    padding: 8px 10px;
+    font-size: 14px;
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.dropdown-menu a:hover {
+    color: rgba(42, 210, 201, 1); /* Change text color on hover */
+}
