@@ -6,10 +6,6 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Api\StressDetectionController;
-
-Route::post('/stress-interactions', [StressInteractionController::class, 'store']);
-Route::post('/stress-interactions/{id}/feedback', [StressInteractionController::class, 'feedback']);
 
 Route::post('/detectstress', [StressDetectionController::class, 'detectStress']);
 
@@ -37,4 +33,3 @@ Route::post('posts/{post_id}/reactions', [ReactionController::class, 'store']);
 //OTP
 Route::post('/send-otp', [OTPController::class, 'sendOTP']);
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
-

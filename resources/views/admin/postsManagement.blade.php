@@ -14,31 +14,57 @@
   <header>
     <div class="header-container">
       <div class="logo">
-        <img src="{{ asset('images/logo.png') }}" alt="RewaqX" />
+        <img src="{{ asset('images/logo.svg') }}" alt="RewaqX" />
       </div>
       <div class="user-profile">
         <img src="{{ asset('images/user-circle-2.png') }}" alt="Admin" class="profile-img" />
         <span>Admin</span>
-        <img src="{{ asset('images/Chevron left.png') }}" alt="Dropdown" class="dropdown-icon" />
+        <img id="dropdown-toggle" src="{{ asset('images/Chevron left.png') }}" alt="Dropdown" class="dropdown-icon" />
+        <!-- Dropdown Menu -->
+        <div id="dropdown-menu" class="dropdown-menu">
+          <a href="{{ route('logout') }}">Log out</a>
+        </div>
       </div>
     </div>
   </header>
 
   <main>
-    <aside class="sidebar">
-      <nav>
-        <ul>
-          <li><a href="#"><i data-feather="home"></i><span>Dashboard</span></a></li>
-          <li><a href="#"><i data-feather="user"></i><span>Employees Management</span></a></li>
-          <li><a href="#"><i data-feather="calendar"></i><span>Events Management</span></a></li>
-          <li><a href="#" class="active"><i data-feather="message-square"></i><span>Posts Management</span></a></li>
-        </ul>
-      </nav>
-    </aside>
+  <aside class="sidebar">
+  <nav>
+    <ul>
+    <!-- Dashboard -->
+      <li>
+        <a href="{{ route('admin.dashboard') }}"
+           class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+          <img src="{{ asset('images/Home.png') }}" alt="Dashboard" class="icon"/>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      
+    <!-- Employees Management  -->
+      <li>
+        <a href="{{ route('employees.index') }}"
+           class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
+          <img src="{{ asset('images/user icon.png') }}" alt="Employees Management" class="icon"/>
+          <span>Employees Management</span>
+        </a>
+      </li>
+      
+    <!-- Posts Management  -->
+      <li>
+        <a href="{{ route('posts.management') }}"
+           class="{{ request()->routeIs('posts.management') ? 'active' : '' }}">
+          <img src="{{ asset('images/Message.png') }}" alt="Posts Management" class="icon"/>
+          <span>Posts Management</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
 
     <section class="content">
+    <h1>Posts Management</h1>
       <div class="actions">
-        <h1>Posts Management</h1>
         <div class="action-buttons">
           <form id="deleteForm" method="POST" action="{{ route('admin.posts.delete') }}">
             @csrf
@@ -127,6 +153,18 @@
         }
       });
     });
+  </script>
+   <script>
+    // JavaScript for handling dropdown menu
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+
+    // Toggle dropdown menu visibility
+    dropdownToggle.addEventListener('click', () => {
+      dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
+    });
+
+    
   </script>
 </body>
 </html>
