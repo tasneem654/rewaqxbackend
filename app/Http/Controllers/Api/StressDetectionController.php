@@ -14,7 +14,7 @@ class StressDetectionController extends Controller
     const STRESS_WINDOW = 20;
     
     // Ollama API configuration - replace with your Ollama server address
-    const OLLAMA_API_URL = 'http://172.20.10.3:11434/api/generate';
+    const OLLAMA_API_URL = 'http://172.20.10.2:11434/api/generate';
     const OLLAMA_MODEL = 'deepseek-r1:1.5b'; // Make sure this matches your Flutter app
     
     public function detectStress(Request $request)
