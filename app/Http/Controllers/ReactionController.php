@@ -31,6 +31,13 @@ class ReactionController extends Controller
             return response()->json(['error' => 'Post not found'], 404);
         }
 
+         
+        // Check if user is trying to react to their own post
+        if ($user->id === $post->user_id) {
+            return response()->json(['error' => 'You cannot react to your own post'], 400);
+          }
+
+          
         // Get the user's points record
         $userPoints = $user->points;
         if (!$userPoints) {

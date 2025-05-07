@@ -21,8 +21,6 @@ return new class extends Migration
             $table->boolean('is_stressed')->default(false);
             $table->float('stress_score')->nullable();
             $table->smallInteger('hour_of_day')->nullable();
-            $table->boolean('was_correct')->nullable();
-            $table->json('context_data')->nullable();
             $table->timestamps();
         });
     }

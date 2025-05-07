@@ -174,7 +174,8 @@
     <ul>
         @foreach($users as $user)
             <li class="user-entry">
-                <img src="{{ $user->profile->image ?? asset('images/default-user.png') }}" alt="Image">
+            <img src="{{ $user->profile->image ? asset('images/' . $user->profile->image) : asset('images/profile_images/default-profile.png') }}" 
+            alt="Profile Image">
                 <div class="user-details">
                     <strong>{{ $user->profile->name ?? 'No Name' }}</strong><br>
                     <span>{{ $user->profile->role ?? 'No Role' }} - {{ $user->profile->department ?? 'No Department' }}</span>

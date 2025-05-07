@@ -7,10 +7,12 @@ use App\Http\Controllers\OTPController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\VoucherController;
+use App\Http\Controllers\Api\StressDetectionController;
 
 Route::post('/detectstress', [StressDetectionController::class, 'detectStress']);
 
 Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/user', [UserController::class, 'index']);
 
 // Route to fetch all posts (API endpoint)
 Route::get('/posts', [PostController::class, 'index']);
